@@ -11,15 +11,16 @@ context('Reply', () => {
 
   it('Post a reply', () => {
     const comment = reply.message + Date.now();
-    
+
     cy.visit(`/t/sandbox`);
 
-    cy.request('/api/discussions?filter[q]=tag:sandbox&page[limit]=50').then((response) => {
-      return response.body.data
-    }).as('discussionsArray');
-    
+    cy.request('/api/discussions?filter[q]=tag:sandbox&page[limit]=50')
+        .then((response) => {
+          return response.body.data;
+        }).as('discussionsArray');
+
     cy.get('@discussionsArray').then((discussionsArray) => {
-      for (let discussion of discussionsArray) {
+      for (const discussion of discussionsArray) {
         if (discussion.attributes.title === reply.discussionToReply) {
           cy.visit(`/d/${discussion.id}-${discussion.attributes.slug}`);
           break;
@@ -28,14 +29,14 @@ context('Reply', () => {
     });
 
     cy.get('.Post > .Post-header')
-      .click();
+        .click();
     cy.get('#textarea1')
-      .type(comment);
+        .type(comment);
     cy.get('.item-submit > .Button')
-      .click();
+        .click();
     cy.reload();
     cy.get('.CommentPost')
-      .last()
-      .should('contain', comment);
+        .last()
+        .should('contain', comment);
   });
 });

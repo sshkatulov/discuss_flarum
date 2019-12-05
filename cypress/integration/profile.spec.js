@@ -24,22 +24,24 @@ context('Profile', () => {
     }).as('fakeDetails');
 
     cy.get('.UserBio-content')
-      .click();
+        .click();
     cy.get('.UserBio > .FormControl')
-      .clear()
-      .type(fakeBio)
-      .type('{enter}');
+        .clear()
+        .type(fakeBio)
+        .type('{enter}');
     cy.wait('@fakePost')
-      .then((request) => expect(request.requestBody.data.attributes.bio).to.eq(fakeBio));
+        .then((request) => {
+          expect(request.requestBody.data.attributes.bio).to.eq(fakeBio);
+        });
 
     cy.visit('/');
     cy.route('GET', '/api/posts*', '@fakeDetails')
-      .as('fakeGet');
+        .as('fakeGet');
 
     cy.visit(`/u/${credentials.user}`);
 
     cy.wait('@fakeGet');
     cy.get('.UserBio-content')
-      .should('contain', fakeBio);
+        .should('contain', fakeBio);
   });
 });
