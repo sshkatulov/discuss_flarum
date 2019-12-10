@@ -28,7 +28,7 @@ context('Reply', () => {
         }
       });
 
-      cy.get('.Post > .Post-header')
+      cy.get('.SplitDropdown-button')
           .click();
       cy.get('#textarea1')
           .type(comment);
